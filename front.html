@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>reation Attraction form</title>
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <style>
+      html, body {
+      min-height: 100%;
+   
+      }
+    td , th{
+      border-bottom: 1px solid #ddd;
+    }
+      
+      #listRoller{
+        display: none;
+        color : black;
+        margin-left: 40%;
+       width: 100%;
+      
+      }
+      #formUpdate{
+        display: none;
+      }
+      #formDelete{
+        display: none;
+      }
+      body, div, form, input, select, p { 
+      padding: 0;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 16px;
+      color: #eee;
+      }
+      body {
+      background: url("/uploads/media/default/0001/01/b5edc1bad4dc8c20291c8394527cb2c5b43ee13c.jpeg") no-repeat center;
+      background-size: cover;
+      }
+      h1, h2 {
+      text-transform: uppercase;
+      font-weight: 400;
+      }
+      h2 {
+      margin: 0 0 0 8px;
+      }
+      .main-block {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      padding: 25px;
+      background: rgba(0, 0, 0, 0.5); 
+      }
+      .left-part, form {
+      padding: 25px;
+      margin-left: 80px;
+      margin-right: 80px;
+      }
+      .left-part {
+      text-align: center;
+      }
+      .fa-graduation-cap {
+      font-size: 72px;
+      }
+      form {
+      background: rgba(0, 0, 0, 0.7); 
+      }
+      .title {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      }
+      .info {
+      display: flex;
+      flex-direction: column;
+      }
+      input, select {
+      padding: 5px;
+      margin-bottom: 30px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #eee;
+      }
+      input::placeholder {
+      color: #eee;
+      }
+      option:focus {
+      border: none;
+      }
+      option {
+      background: black; 
+      border: none;
+      }
+      .checkbox input {
+      margin: 0 10px 0 0;
+      vertical-align: middle;
+      }
+      .checkbox a {
+      color: #26a9e0;
+      }
+      .checkbox a:hover {
+      color: #85d6de;
+      }
+      .btn-item, button {
+      padding: 10px 5px;
+      margin-top: 20px;
+      border-radius: 5px; 
+      border: none;
+      background: #26a9e0; 
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 400;
+      color: #fff;
+      }
+      .btn-item {
+      display: inline-block;
+      margin: 20px 5px 0;
+      }
+      button {
+      width: 100%;
+      }
+      button:hover, .btn-item:hover {
+      background: #85d6de;
+      }
+      @media (min-width: 568px) {
+      html, body {
+      height: 100%;
+      }
+      .main-block {
+      flex-direction: row;
+      height: calc(100% - 50px);
+      }
+      .left-part, form {
+      
+      height: auto;
+      }
+      }
+    </style>
+  </head>
+  <body>
+    <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+      <div class="left-part">
+        <img src="roller-coaster-svgrepo-com.svg"   height="127px"
+        width="150px">
+        <h1 style="color:#26a9e0">Manage Your Roller Coaster</h1>
+   
+        <div class="btn-group">
+          <button onclick="showCreateForm()">Create Attraction</button>
+          <button  onclick="showUpdateForm()">Update Attraction</button>
+          <button   onclick="showList()">Affichage Attractions</button>
+          <button   onclick="generateFile()">Saving To Json</button>
+          <button style="background-color : red" onclick="showDeleteForm()">Delete Attraction</button>
+        </div>
+      </div>
+
+      <table id="listRoller">
+        <thead>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Place</th>
+        <th>InPark</th>
+        <th>Manufacturer</th>
+      </thead>
+      <tbody id="tbodyTable">
+
+      </tbody>
+      
+      </table>
+      <form  id="formCreate" method="POST" action="http://127.0.0.1:8001/create" target="dummyframe" >
+        <div class="title">
+          <i class="fas fa-pencil-alt"></i> 
+          <h2>Create here</h2>
+        </div>
+        <div class="info">
+          <input class="fname" type="text" name="Name" placeholder="Name">
+          <input type="text" name="InPark" placeholder="InPark">
+          <input type="text" name="Place" placeholder="Place">
+          <input type="password" name="Manufacturer" placeholder="Manufacturer">
+       
+        </div>
+       
+        <button type="submit" onclick="alert('Attraction Created');">Submit</button>
+      </form>
+
+      <form id="formUpdate" method="POST" action="http://127.0.0.1:8001/patch" target="dummyframe">
+        <div class="title">
+          <i class="fas fa-pencil-alt"></i> 
+          <h2>Update here</h2>
+        </div>
+        <div class="info">
+          <select name="Id" id="selectIdUpdate"></select>
+          <input class="fname" type="text" name="Name" placeholder="Name">
+          <input type="text" name="InPark" placeholder="InPark">
+          <input type="text" name="Place" placeholder="Place">
+          <input type="password" name="Manufacturer" placeholder="Manufacturer">
+       
+        </div>
+       
+        <button type="submit" onclick="alert('Attraction Updated');">Submit</button>
+      </form>
+
+      <form id="formDelete" method="POST" action="http://127.0.0.1:8001/delete" target="dummyframe">
+        <div class="title">
+          <i class="fas fa-pencil-alt"></i> 
+          <h2>Delete here</h2>
+        </div>
+        <div class="info">
+          <select name="Id" id="Id"></select>
+        
+       
+        </div>
+       
+        <button type="submit" onclick="alert('Attraction Deleted');">Submit</button>
+      </form>
+    </div>
+  </body>
+  <script>
+   
+
+
+   
+   function showCreateForm(){
+
+     document.getElementById("formCreate").style.display = 'block'
+     document.getElementById("formUpdate").style.display = 'none'
+     document.getElementById("listRoller").style.display = 'none'
+     document.getElementById("formDelete").style.display = 'none'
+
+    }
+  
+  function showUpdateForm(){
+      document.getElementById("formCreate").style.display = 'none'
+      document.getElementById("formDelete").style.display = 'none'
+      document.getElementById("listRoller").style.display = 'none'
+     document.getElementById("formUpdate").style.display = 'block'
+
+     
+
+     let data;
+     $.ajax({
+        type: "GET",
+        url: 'http://127.0.0.1:8001/get',
+        async:true,
+        data : data,
+        dataType : 'json',   //you may use jsonp for cross origin request
+        crossDomain:true,
+        success: function(data, status, xhr) {
+          var tbody = $('#tbodyTable'); 
+          var selectId = $('#selectIdUpdate');
+          tbody.empty();
+          data.forEach(element => {
+            let option = document.createElement("option");
+            option.value = element.Id
+            option.innerHTML = element.Id
+            let tr = document.createElement("tr");
+            let tdID = document.createElement("td");
+            let tdName = document.createElement("td");
+            let tdPlace = document.createElement("td");
+            let tdManufacturer = document.createElement("td");
+            let tdInPark = document.createElement("td");
+            tdID.innerHTML = element.Id
+            tdPlace.innerHTML = element.Place
+            tdManufacturer.innerHTML = element.Manufacturer
+            tdInPark.innerHTML = element.InPark
+            tdName.innerHTML = element.Name
+
+            tr.append(tdID,tdName,tdPlace,tdInPark,tdManufacturer)
+            selectId.append(option)
+            tbody.append(tr)
+          });
+         
+ 
+        }, error: function(data, status, xhr) {
+            console.log(data)
+            }
+     
+    });
+}
+
+function showDeleteForm(){
+      document.getElementById("formCreate").style.display = 'none'
+     document.getElementById("formUpdate").style.display = 'none'
+     document.getElementById("listRoller").style.display = 'none'
+     document.getElementById("formDelete").style.display = 'block'
+
+     let data;
+   $.ajax({
+        type: "GET",
+        url: 'http://127.0.0.1:8001/get',
+        async:true,
+        data : data,
+        dataType : 'json',   //you may use jsonp for cross origin request
+        crossDomain:true,
+        success: function(data, status, xhr) {
+          var tbody = $('#tbodyTable'); 
+          var selectId = $('#Id');
+          tbody.empty();
+          data.forEach(element => {
+            let option = document.createElement("option");
+            option.value = element.Id
+            option.innerHTML = element.Id
+            let tr = document.createElement("tr");
+            let tdID = document.createElement("td");
+            let tdName = document.createElement("td");
+            let tdPlace = document.createElement("td");
+            let tdManufacturer = document.createElement("td");
+            let tdInPark = document.createElement("td");
+            tdID.innerHTML = element.Id
+            tdPlace.innerHTML = element.Place
+            tdManufacturer.innerHTML = element.Manufacturer
+            tdInPark.innerHTML = element.InPark
+            tdName.innerHTML = element.Name
+
+            tr.append(tdID,tdName,tdPlace,tdInPark,tdManufacturer)
+            selectId.append(option)
+            tbody.append(tr)
+          });
+         
+ 
+        }, error: function(data, status, xhr) {
+            console.log(data)
+            }
+     
+    });
+}
+function showList(){
+
+     document.getElementById("formCreate").style.display = 'none'
+     document.getElementById("formUpdate").style.display = 'none'
+     document.getElementById("formDelete").style.display = 'none'
+     document.getElementById("listRoller").style.display = 'block'
+
+     let data;
+   $.ajax({
+        type: "GET",
+        url: 'http://127.0.0.1:8001/get',
+        async:true,
+        data : data,
+        dataType : 'json',   //you may use jsonp for cross origin request
+        crossDomain:true,
+        success: function(data, status, xhr) {
+          var tbody = $('#tbodyTable'); 
+          var selectId = $('#Id');
+          tbody.empty();
+          data.forEach(element => {
+            let option = document.createElement("option");
+            option.value = element.Id
+            option.innerHTML = element.Id
+            let tr = document.createElement("tr");
+            let tdID = document.createElement("td");
+            let tdName = document.createElement("td");
+            let tdPlace = document.createElement("td");
+            let tdManufacturer = document.createElement("td");
+            let tdInPark = document.createElement("td");
+            tdID.innerHTML = element.Id
+            tdPlace.innerHTML = element.Place
+            tdManufacturer.innerHTML = element.Manufacturer
+            tdInPark.innerHTML = element.InPark
+            tdName.innerHTML = element.Name
+
+            tr.append(tdID,tdName,tdPlace,tdInPark,tdManufacturer)
+            selectId.append(option)
+            tbody.append(tr)
+          });
+         
+ 
+        }, error: function(data, status, xhr) {
+            console.log(data)
+            }
+     
+    });
+}
+
+function generateFile(){
+  let data;
+   $.ajax({
+        type: "GET",
+        url: 'http://127.0.0.1:8001/saveInfile',
+        async:true,
+        data : data,
+        dataType : 'json',   //you may use jsonp for cross origin request
+        crossDomain:true,
+        
+       
+     
+    });
+   
+}
+  </script>
+
+
+</html>
